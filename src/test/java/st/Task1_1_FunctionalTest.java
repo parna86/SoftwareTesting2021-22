@@ -14,16 +14,16 @@ public class Task1_1_FunctionalTest {
 		parser = new Parser();
 	}
 	
-	//1, 2, 8, 10, 11
+	//1, 2, 5, 8, 10, 11, 12, 20 
 	
-////	bug 8 - medium
+//	bug 8 - medium
 //	@Test
 //	public void testOne() { 
 //		parser.addOption(new Option("output", Type.INTEGER), "O");
 //		parser.addOption(new Option("output", Type.INTEGER), "K");
 //		assertEquals(parser.optionOrShortcutExists("O"), false);
 //	}
-//	
+//
 ////	bug 11 - hard
 //	@Test
 //	public void testTwo() {
@@ -97,21 +97,62 @@ public class Task1_1_FunctionalTest {
 //	}
 	
 	
-	@Test 
-	public void testNine() {
-		parser.addOption(new Option("hello", Type.BOOLEAN), "k");
-		parser.setShortcut("hello", "o");
-		assertEquals(parser.parse("-k true"), 1);
-//		assertEquals(parser.getBoolean("-k"), false);
+//	[Bug #1 - Easy, 1PT]
+//	[Bug #5 - Medium, 2PTS]
+//	@Test 
+//	public void testTen() {
+//		parser.addOption(new Option("hello", Type.INTEGER));
+//		parser.parse("--hello=-100");
+//		assertEquals(parser.getInteger("--hello"), -100);
+//	}
+	
+	
+//	[Bug #20 - Hard, 3PTS]
+//	@Test
+//	public void testEleven() {
+//		parser.addOption(new Option("hello", Type.STRING), "o");
+//		parser.parse("--hello=00000000000000000000000000000000000000000000000000        00000000000000000000000000000000       0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+//		assertEquals(parser.getString("--hello"), "00000000000000000000000000000000000000000000000000        00000000000000000000000000000000       0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+//	} 
+	
+//	[BUG #10]
+//	@Test
+//	public void testTwelve() {
+//		parser.addOption(new Option("o", Type.BOOLEAN), "nothing");
+////		parser.addOption(new Option("hello", Type.STRING), "o");
+//		parser.parse("--o");
+//		assertEquals(parser.getCharacter("o"), false);
+//	}
+	
+	
+	//ERROR WITH CODE MAYBE
+//	@Test
+//	public void testThirteen() {
+//		parser.addOption(new Option("hello", Type.INTEGER), "o");
+////		parser.parse("-o 2");
+////		parser.replace("hello", "true", "nothing");
+//		parser.parse("--o=2 --hello=1 --o=3");
+//		assertEquals(parser.optionExists("--o"), true);
+//		assertEquals(parser.getInteger("--o"), 3);
+//	}
+	
+	//[Bug #12 - Hard, 3PTS]
+//	@Test 
+//	public void testFourteen() {
+//		parser.addOption(new Option("hello", Type.STRING), "world");
+//		parser.addOption(new Option("option", Type.STRING), "hello") ;
+//		parser.parse("--hello=something -hello=something");
+//		parser.replace("-hello", "something", "nothing");
+//		assertEquals(parser.getString("-hello"), "nothing");
+//	}
+	
+	
+	@Test
+	public void testFifteen() {
+		parser.addOption(new Option(" ", Type.STRING), "O");
+		assertEquals(parser.parse("--O Hello"), 0);
+		assertEquals(parser.getString(" "), "Hello");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
