@@ -136,15 +136,30 @@ public class Task1_1_FunctionalTest {
 //	}
 	
 	//bug4
-	@Test
-	public void testFifteen() {
-		parser.addOption(new Option("h", Type.STRING), "averyveryveryveryveryveryveryveryverylongshortcut");
-		assertEquals(parser.shortcutExists("averyveryveryveryveryveryveryveryverylongshortcut"), true);
-	}
+//	@Test
+//	public void testFifteen() {
+//		parser.addOption(new Option("h", Type.STRING), "averyveryveryveryveryveryveryveryverylongshortcut");
+//		assertEquals(parser.shortcutExists("averyveryveryveryveryveryveryveryverylongshortcut"), true);
+//	}
+//	
+	
+	//bug-19
+	
+//	@Test 
+//	public void testSixteen() {
+//		parser.addOption(new Option("hello", Type.STRING), "o");
+//		parser.parse("--hello= \"yo-lo\"");
+////		assertEquals(parser.getString("hello"), "\"yolo\"");
+//	}
 	
 	
-	
-	
+	//bug 7
+//	@Test
+//	public void testSeventeen() {
+//		parser.addOption(new Option("hello", Type.STRING), "o");
+//		parser.parse("--hello=1122334455");
+//		assertEquals(parser.getInteger("hello"), "1122334455");
+//	}
 	
 	
 	
