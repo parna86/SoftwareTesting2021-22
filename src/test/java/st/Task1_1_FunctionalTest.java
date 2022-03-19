@@ -125,17 +125,6 @@ public class Task1_1_FunctionalTest {
 //	}
 	
 	
-	//ERROR WITH CODE MAYBE
-//	@Test
-//	public void testThirteen() {
-//		parser.addOption(new Option("hello", Type.INTEGER), "o");
-////		parser.parse("-o 2");
-////		parser.replace("hello", "true", "nothing");
-//		parser.parse("--o=2 --hello=1 --o=3");
-//		assertEquals(parser.optionExists("--o"), true);
-//		assertEquals(parser.getInteger("--o"), 3);
-//	}
-	
 	//[Bug #12 - Hard, 3PTS]
 //	@Test 
 //	public void testFourteen() {
@@ -146,12 +135,11 @@ public class Task1_1_FunctionalTest {
 //		assertEquals(parser.getString("-hello"), "nothing");
 //	}
 	
-	
+	//bug4
 	@Test
 	public void testFifteen() {
-		parser.addOption(new Option(" ", Type.STRING), "O");
-		assertEquals(parser.parse("--O Hello"), 0);
-		assertEquals(parser.getString(" "), "Hello");
+		parser.addOption(new Option("h", Type.STRING), "averyveryveryveryveryveryveryveryverylongshortcut");
+		assertEquals(parser.shortcutExists("averyveryveryveryveryveryveryveryverylongshortcut"), true);
 	}
 	
 	
