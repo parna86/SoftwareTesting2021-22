@@ -18,13 +18,13 @@ public class Task1_1_FunctionalTest {
 	
 	
 	/*
-	 * BUG 1 - what is it
+	 * BUG 1 - empty shortcuts are considered valid
 	 * */
-//	@Test
+//	@Test(expected = RuntimeException.class)
 //	public void bugOne() {
-//		parser.addOption(new Option("hello", Type.STRING), "o");
-//		parser.parse("-o=nothing");
-//		assertEquals(parser.getString("hello"), "nothing");
+//		parser.addOption(new Option("hello", Type.STRING),"");
+// 		parser.parse("- hello");
+// 		assertEquals(parser.getString(""), "hello");
 //	}
 //	
 	
@@ -56,7 +56,7 @@ public class Task1_1_FunctionalTest {
 	 * very long shortcut name is used
 	 * */
 //	@Test
-//	public void testFifteen() {
+//	public void bugFour() {
 //		parser.addOption(new Option("h", Type.STRING), "averyveryveryveryveryveryveryveryverylongshortcut");
 //		assertEquals(parser.shortcutExists("averyveryveryveryveryveryveryveryverylongshortcut"), true);
 //	}
@@ -66,7 +66,7 @@ public class Task1_1_FunctionalTest {
 	 * BUG FIVE - Negative integers are not handled correctly
 	 * */
 //	@Test 
-//	public void testTen() {
+//	public void bugFive() {
 //		parser.addOption(new Option("hello", Type.INTEGER));
 //		parser.parse("--hello=-100");
 //		assertEquals(parser.getInteger("--hello"), -100);
@@ -77,10 +77,10 @@ public class Task1_1_FunctionalTest {
 	 * options are equal
 	 * */
 //	@Test
-//	public void testTwentyOne() {
-//		Option a = new Option("world", Type.STRING);
-//		Option b = new Option("hello", Type.STRING);
-//		assertEquals(a.equals(b), false);
+//	public void bugSix() {
+//		Option world = new Option("world", Type.STRING);
+//		Option hello = new Option("hello", Type.STRING);
+//		assertEquals(hello.equals(world), false);
 //	}
 	
 	/*
@@ -88,7 +88,7 @@ public class Task1_1_FunctionalTest {
 	 * 
 	 * */
 //	@Test
-//	public void testSeventeen() {
+//	public void bugSeven() {
 //		parser.addOption(new Option("hello", Type.STRING), "o");
 //		parser.parse("--hello=1122334455");
 //		assertEquals(parser.getInteger("hello"), "1122334455");
@@ -99,7 +99,7 @@ public class Task1_1_FunctionalTest {
 	 * BUG 8 - The shortcut is not overwritten correctly 
 	 * */
 //	@Test
-//	public void testOne() { 
+//	public void bugEight() { 
 //		parser.addOption(new Option("output", Type.INTEGER), "O");
 //		parser.addOption(new Option("output", Type.INTEGER), "K");
 //		assertEquals(parser.optionOrShortcutExists("O"), false);
@@ -111,7 +111,7 @@ public class Task1_1_FunctionalTest {
 	 * there is no result
 	 * */
 //	@Test
-//	public void testTwenty() {
+//	public void bugNine() {
 //		parser.addOption(new Option("option", Type.STRING));
 //		assertEquals(parser.parse(" "), 0);
 //	}
@@ -121,7 +121,7 @@ public class Task1_1_FunctionalTest {
 	 * BUG 10 - Sending a null character to input throws unexpected result
 	 * */
 //	@Test 
-//	public void testThree() {
+//	public void bugTen() {
 //		parser.addOption(new Option("output", Type.CHARACTER), "o");
 //		parser.parse("--output=\0");
 //		
@@ -132,56 +132,18 @@ public class Task1_1_FunctionalTest {
 	 * BUG 11 - A % in the option name is considered valid, when it should not be
 	 * */
 //	@Test
-//	public void testTwo() {
+//	public void bugEleven() {
 //		parser.addOption(new Option("he%llo", Type.BOOLEAN), "k");
 //		assertEquals(parser.optionExists("he%llo"), false);
 //	}
 	
 	
-	
-//	Bug 1
-//	
-//	
-	
-	//[Bug #2 - Easy, 1PT] AGAIN!
-//	@Test
-//	public void testEight() {
-//		parser.addOption(new Option("k", Type.BOOLEAN), "hello");
-//		parser.parse("--k");
-//		assertEquals(parser.getBoolean("k"), false);
-//		
-//	}
-	
-//	@Test - BUG ONE AGAIN
-//	
-	
-	
-//	[Bug #1 - Easy, 1PT]
-//	[Bug #5 - Medium, 2PTS]
-//	
-	
-	
-//	[Bug #20 - Hard, 3PTS]
-//	@Test
-//	public void testEleven() {
-//		parser.addOption(new Option("hello", Type.STRING), "o");
-//		parser.parse("--hello=00000000000000000000000000000000000000000000000000        00000000000000000000000000000000       0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-//		assertEquals(parser.getString("--hello"), "00000000000000000000000000000000000000000000000000        00000000000000000000000000000000       0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-//	} 
-	
-//	[BUG #10]
-//	@Test
-//	public void testTwelve() {
-//		parser.addOption(new Option("o", Type.BOOLEAN), "nothing");
-////		parser.addOption(new Option("hello", Type.STRING), "o");
-//		parser.parse("--o");
-//		assertEquals(parser.getCharacter("o"), false);
-//	}
-	
-	
-	//[Bug #12 - Hard, 3PTS]
+	/*
+	 * BUG 12 - When an option and a shortcut have the same name, the replace 
+	 * function does not correctly replace the right value of the shortcut 
+	 * */
 //	@Test 
-//	public void testFourteen() {
+//	public void bugTwelve() {
 //		parser.addOption(new Option("hello", Type.STRING), "world");
 //		parser.addOption(new Option("option", Type.STRING), "hello") ;
 //		parser.parse("--hello=something -hello=something");
@@ -189,86 +151,90 @@ public class Task1_1_FunctionalTest {
 //		assertEquals(parser.getString("-hello"), "nothing");
 //	}
 	
-	//bug4
-//	
-//	
 	
-	//bug-19
-	
-//	@Test 
-//	public void testSixteen() {
-//		parser.addOption(new Option("hello", Type.STRING), "o");
-//		parser.parse("--hello= \"yo-lo\"");
-////		assertEquals(parser.getString("hello"), "\"yolo\"");
-//	}
-	
-	
-	//bug 7
-//	
-	
-	//
-	
-	
-	//bug 17
+	/*
+	 * BUG 13 - the equals sign is not handled correctly when used with single quotes
+	 * */
 //	@Test
-//	public void testEighteen() {
-//		parser.addOption(new Option("averyveryveryveryveryveryveryveryveryveryveryverylongoption", Type.STRING));
-//		assertEquals(parser.optionExists("averyveryveryveryveryveryveryveryveryveryveryverylongoption"), true);
-//	}
-	
-	
-	//bug 1 + 13
-//	@Test
-//	public void testNineteen() {
+//	public void bugThirteen() {
 //		parser.addOption(new Option("option", Type.STRING));
-//		parser.parse("--option='he=llo'");
-//		assertEquals(parser.getString("option"), "'he=llo'");
+//		parser.parse("--option='='");
+//		assertEquals(parser.getString("option"), "'='");
 //	}
+//	
 	
-	//bug 14
+	/*
+	 * BUG 14 - 
+	 * */
 //	@Test
-//	public void testTwenty() {
+//	public void bugFourteen() {
 //		parser.addOption(new Option("option", Type.STRING));
 //		parser.parse("--option=\\n");
 //		assertEquals(parser.getString("option"), "\\n");
 //	}
 	
-	
-	//bug 3
+	/*
+	 * BUG 15 - When an int passed to a string is out of range, 
+	 * parser.getInteger does not handle it correctly
+	 * */
 //	@Test
-//	public void testTwenty() {
-//		parser.addOption(new Option("option", Type.BOOLEAN));
-//		parser.parse("--option=avaluehere");
-//		assertEquals(parser.getInteger("option"), 1);
-//	}
-	
-	//bug 9
-//		
-	
-	//bug 1 + 7 +  15
-//	@Test
-//	public void testTwenty() {
+//	public void bugFifteen() {
 //		parser.addOption(new Option("option", Type.STRING));
 //		parser.parse("--option=12345632455");
 //		assertEquals(parser.getInteger("option"), "12345632455");
 //	}
 	
-	//[Bug #16 - Medium, 2PTS]
+	/*
+	 * BUG 16 - trying to access null in getString does not throw a null pointer
+	 * exception
+	 * */
 //	@Test(expected = NullPointerException.class)
-//	public void testTwenty() {
+//	public void bugSixteen() {
 //		parser.addOption(new Option("option", Type.STRING));
 //		parser.getString(null);
-////		assertEquals(parser.getInteger("option"), "12345632455");
 //	}
 	
-	//bug6
-//	
 	
-	//BUG 18? 
+	/*
+	 * BUG 17 - a long option name is considered invalid, but there is no
+	 * limit specified in the specs
+	 * */
 //	@Test
-//	public void testTwentyTwo() {
+//	public void bugSeventeen() {
+//		parser.addOption(new Option("averyveryveryveryveryveryveryveryveryveryveryverylongoption", Type.STRING));
+//		assertEquals(parser.optionExists("averyveryveryveryveryveryveryveryveryveryveryverylongoption"), true);
+//	}
+	
+	
+	/*
+	 * BUG 18 - extra space padded after the variable list stops  
+	 * performing the replace operation 
+	 * */
+//	@Test
+//	public void bugEighteen() {
 //		parser.addOption(new Option("hello", Type.STRING));
 //		parser.parse("--hello=world");
-//		parser.replace("        hello", "world", "ST");
+//		parser.replace("hello      ", "world", "ST");
+//		assertEquals(parser.getString("hello"), "ST");
 //	}
+	
+	/**
+	 * BUG 19 - dashes are not handled correctly with double quotes
+	 * */
+//	@Test 
+//	public void bugNineteen() {
+//		parser.addOption(new Option("hello", Type.STRING), "o");
+//		parser.parse("--hello= \"yo-lo\"");
+//		assertEquals(parser.getString("hello"), "\"yo-lo\"");
+//	}
+	
+	/*
+	 * BUG 20 - large spaces between words as input for one option is invalid
+	 * */
+//	@Test
+//	public void testEleven() {
+//		parser.addOption(new Option("hello", Type.STRING), "o");
+//		parser.parse("--hello=there             Aparna");
+//		assertEquals(parser.getString("--hello"), "there             Aparna");
+//	} 
 }
