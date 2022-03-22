@@ -13,7 +13,7 @@ public class Task3_TDD1 {
 		parser = new Parser();
 	}
 	
-//	@Test
+//	@Test=
 //	public void test() {
 //		parser.addAll("option1 option2 option3 option4","o1 o2 o3 o4", "String Integer Boolean Character");
 //		assertTrue(parser.optionExists("option1"));
@@ -21,7 +21,7 @@ public class Task3_TDD1 {
 	
 	@Test
 	public void test1() {
-		parser.addAll("optiona-c option4", "String Integer");
+		parser.addAll("   g129-11 op2 op!!3 op4","opp3-8", "String Integer Boolean");
 		assertTrue(parser.optionExists("option4"));
 	}
 	

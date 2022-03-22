@@ -223,88 +223,57 @@ public class Parser {
 	}
 	
 	public void addAll(String options, String shortcuts, String types) {
+		options = options.trim();
+		shortcuts = shortcuts.trim();
+		types = types.trim();
 		String[] optionParse = options.split(" ");
 		String[] shortcutParse = shortcuts.split(" ");
 		String[] typesParse = types.split(" ");
+		List<String> newShortcuts = new ArrayList<String>();
 		int lenOption = optionParse.length; 
 		int lenShortcut = shortcutParse.length;
 		int lenTypes = typesParse.length;
-		
-		int i = 0;
-		while(i < lenOption) {
-			String currType;
-			
-			if(i >= lenTypes) {
-				currType = typesParse[lenTypes - 1].trim();
+		int j = 0;
+		while(j < lenShortcut) {
+			if(shortcutParse[j].contains("-")) {
+				String[] multipleOptions = shortcutParse[j].split("-");
+//				System.out.println("MultipleOptions: " + multipleOptions[0] + " ? " + multipleOptions[1]);
+				String groupName = multipleOptions[0].substring(0,multipleOptions[0].length()-1);
+//				System.out.println("groupname: " + groupName);
+				String startRange = Character.toString(multipleOptions[0].charAt(multipleOptions[0].length()-1));
+				String endRange = multipleOptions[1];
+				if(!(isNumeric(endRange) || isAlpha(endRange))
+					|| (isNumeric(startRange) && isAlpha(endRange))
+					|| (isNumeric(endRange) && isAlpha(endRange))){
+					break; //add something here
+				}
+				else if(isNumeric(startRange)) {
+					int start = Integer.parseInt(startRange);
+					int end = Integer.parseInt(endRange);
+					while(start <= end) {
+						newShortcuts.add(groupName + start);
+						start++;
+					}
+				}
+				
+				else { 
+					while(startRange.compareTo(endRange) <= 0) {
+						newShortcuts.add(groupName + startRange);
+						startRange = String.valueOf( (char) (startRange.charAt(0) + 1));;
+					}
+				}
+			}//if
+			else {
+				newShortcuts.add(shortcutParse[j]);
 			}
-			else
-				currType = typesParse[i].trim();
-			
-			Option currOption = new Option(optionParse[i].trim(), Type.BOOLEAN);
-			if(currType.equals("String")) {
-				currOption.setType(Type.STRING);
-			}
-			else if(currType.equals("Integer")) {
-				currOption.setType(Type.INTEGER);
-			}
-			else if(currType.equals("Character")) {
-				currOption.setType(Type.CHARACTER);
-			}
-			
-			
-			if(i >= lenShortcut) {
-				addOption(currOption);
-			}
-			else{
-				addOption(currOption, shortcutParse[i].trim());
-			}
-			i++;
+			j++;
 		}
-		
-	}
-	
-//	public void addAll(String options, String types) {
-//		String[] optionParse = options.split(" ");
-//		String[] typesParse = types.split(" ");
-//		int lenOption = optionParse.length; 
-//		int lenTypes = typesParse.length;
-//		
-//		int i = 0;
-//		while(i < lenOption) {
-//			String currType;
-//			
-//			if(i >= lenTypes) {
-//				currType = typesParse[lenTypes - 1].trim();
-//			}
-//			else
-//				currType = typesParse[i].trim();
-//			
-//			Option currOption = new Option(optionParse[i].trim(), Type.BOOLEAN);
-//			if(currType.equals("String")) {
-//				currOption.setType(Type.STRING);
-//			}
-//			else if(currType.equals("Integer")) {
-//				currOption.setType(Type.INTEGER);
-//			}
-//			else if(currType.equals("Character")) {
-//				currOption.setType(Type.CHARACTER);
-//			}
-//			addOption(currOption);
-//			i++;
-//		}
-//	}
-	
-	public void addAll(String options, String types) {
-		String[] optionParse = options.split(" ");
-		String[] typesParse = types.split(" ");
-		int lenOption = optionParse.length; 
-		int lenTypes = typesParse.length;
-		
+		System.out.println(newShortcuts);
 		int i = 0;
+		int shortcutCounter = 0;
 		while(i < lenOption) {
 			String currType;
 			String currentOption = optionParse[i];
-//			System.out.println("currentOption: " + currentOption);
 			if(i >= lenTypes) {
 				currType = typesParse[lenTypes - 1].trim();
 			}
@@ -313,9 +282,7 @@ public class Parser {
 			}
 			if(currentOption.contains("-")) {
 				String[] multipleOptions = currentOption.split("-");
-//				System.out.println("MultipleOptions: " + multipleOptions[0] + " ? " + multipleOptions[1]);
 				String groupName = multipleOptions[0].substring(0,multipleOptions[0].length()-1);
-//				System.out.println("groupname: " + groupName);
 				String startRange = Character.toString(multipleOptions[0].charAt(multipleOptions[0].length()-1));
 				String endRange = multipleOptions[1];
 				if(!(isNumeric(endRange) || isAlpha(endRange))
@@ -340,7 +307,132 @@ public class Parser {
 						else if(currType.equals("Character")) {
 							currOption.setType(Type.CHARACTER);
 						}
+						try {
+							if(i >= newShortcuts.size()) {
+								addOption(currOption);
+							}
+							else {
+								addOption(currOption, newShortcuts.get(shortcutCounter));
+								shortcutCounter++;
+							}
+						}
+						catch(Exception e) {
+							i++;
+							continue;
+						}
+						start++; 
+					}
+				}
+				
+				else { 
+					while(startRange.compareTo(endRange) <= 0) {
+						Option currOption = new Option(groupName + startRange, Type.BOOLEAN);
+						if(currType.equals("String")) {
+							currOption.setType(Type.STRING);
+						}
+						else if(currType.equals("Integer")) {
+							currOption.setType(Type.INTEGER);
+						}
+						else if(currType.equals("Character")) {
+							currOption.setType(Type.CHARACTER);
+						}
+						try {
+							if(i >= newShortcuts.size()) {
+								addOption(currOption);
+							}
+							else {
+								addOption(currOption, newShortcuts.get(shortcutCounter));
+								shortcutCounter++;
+							}
+						}
+						catch(Exception e) {
+							i++;
+							continue;
+						}
+						startRange = String.valueOf( (char) (startRange.charAt(0) + 1));;
+					}
+				}
+			}
+			else {
+				Option currOption = new Option(optionParse[i].trim(), Type.BOOLEAN);
+				if(currType.equals("String")) {
+					currOption.setType(Type.STRING);
+				}
+				else if(currType.equals("Integer")) {
+					currOption.setType(Type.INTEGER);
+				}
+				else if(currType.equals("Character")) {
+					currOption.setType(Type.CHARACTER);
+				}
+				try {
+					if(i >= newShortcuts.size()) {
 						addOption(currOption);
+					}
+					else {
+						addOption(currOption, newShortcuts.get(shortcutCounter));
+						shortcutCounter++;
+					}
+				}
+				catch(Exception e) {
+					i++;
+					continue;
+				}
+			}
+			i++;
+		}//for
+		
+	}
+	
+	public void addAll(String options, String types) {
+		options = options.trim();
+		types = types.trim();
+		String[] optionParse = options.split(" ");
+		String[] typesParse = types.split(" ");
+		int lenOption = optionParse.length; 
+		int lenTypes = typesParse.length;
+		
+		int i = 0;
+		while(i < lenOption) {
+			String currType;
+			String currentOption = optionParse[i];
+			if(i >= lenTypes) {
+				currType = typesParse[lenTypes - 1].trim();
+			}
+			else {
+				currType = typesParse[i].trim();
+			}
+			if(currentOption.contains("-")) {
+				String[] multipleOptions = currentOption.split("-");
+				String groupName = multipleOptions[0].substring(0,multipleOptions[0].length()-1);
+				String startRange = Character.toString(multipleOptions[0].charAt(multipleOptions[0].length()-1));
+				String endRange = multipleOptions[1];
+				if(!(isNumeric(endRange) || isAlpha(endRange))
+					|| (isNumeric(startRange) && isAlpha(endRange))
+					|| (isNumeric(endRange) && isAlpha(endRange))){
+					i++;
+					continue;
+				}
+				else if(isNumeric(startRange)) {
+					int start = Integer.parseInt(startRange);
+					int end = Integer.parseInt(endRange);
+					while(start <= end) {
+						Option currOption = new Option(groupName + start, Type.BOOLEAN);
+						if(currType.equals("String")) {
+							currOption.setType(Type.STRING);
+						}
+						else if(currType.equals("Integer")) {
+							currOption.setType(Type.INTEGER);
+						}
+						else if(currType.equals("Character")) {
+							currOption.setType(Type.CHARACTER);
+						}
+						try {
+							addOption(currOption);
+						}
+						catch(Exception e) {
+							i++;
+							continue;
+						}
 						start++;
 					}
 				}
@@ -357,7 +449,13 @@ public class Parser {
 						else if(currType.equals("Character")) {
 							currOption.setType(Type.CHARACTER);
 						}
-						addOption(currOption);
+						try {
+							addOption(currOption);
+						}
+						catch(Exception e) {
+							i++;
+							continue;
+						}
 						startRange = String.valueOf( (char) (startRange.charAt(0) + 1));;
 					}
 				}
@@ -373,7 +471,13 @@ public class Parser {
 				else if(currType.equals("Character")) {
 					currOption.setType(Type.CHARACTER);
 				}
-				addOption(currOption);
+				try {
+					addOption(currOption);
+				}
+				catch(Exception e) {
+					i++;
+					continue;
+				}
 			}
 			i++;
 		}//for
@@ -387,8 +491,7 @@ public class Parser {
             return false;
         }
  
-        for (int i = 0; i < s.length(); i++)
-        {
+        for (int i = 0; i < s.length(); i++){
             char c = s.charAt(i);
             if (!(c >= 'A' && c <= 'Z') && !(c >= 'a' && c <= 'z')) {
                 return false;
