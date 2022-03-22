@@ -247,7 +247,7 @@ public class Parser {
 			else if(currType.equals("Integer")) {
 				currOption.setType(Type.INTEGER);
 			}
-			if(currType.equals("Character")) {
+			else if(currType.equals("Character")) {
 				currOption.setType(Type.CHARACTER);
 			}
 			
@@ -286,7 +286,7 @@ public class Parser {
 			else if(currType.equals("Integer")) {
 				currOption.setType(Type.INTEGER);
 			}
-			if(currType.equals("Character")) {
+			else if(currType.equals("Character")) {
 				currOption.setType(Type.CHARACTER);
 			}
 			addOption(currOption);
