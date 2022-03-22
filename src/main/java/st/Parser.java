@@ -263,6 +263,37 @@ public class Parser {
 		
 	}
 	
+//	public void addAll(String options, String types) {
+//		String[] optionParse = options.split(" ");
+//		String[] typesParse = types.split(" ");
+//		int lenOption = optionParse.length; 
+//		int lenTypes = typesParse.length;
+//		
+//		int i = 0;
+//		while(i < lenOption) {
+//			String currType;
+//			
+//			if(i >= lenTypes) {
+//				currType = typesParse[lenTypes - 1].trim();
+//			}
+//			else
+//				currType = typesParse[i].trim();
+//			
+//			Option currOption = new Option(optionParse[i].trim(), Type.BOOLEAN);
+//			if(currType.equals("String")) {
+//				currOption.setType(Type.STRING);
+//			}
+//			else if(currType.equals("Integer")) {
+//				currOption.setType(Type.INTEGER);
+//			}
+//			else if(currType.equals("Character")) {
+//				currOption.setType(Type.CHARACTER);
+//			}
+//			addOption(currOption);
+//			i++;
+//		}
+//	}
+	
 	public void addAll(String options, String types) {
 		String[] optionParse = options.split(" ");
 		String[] typesParse = types.split(" ");
@@ -272,30 +303,117 @@ public class Parser {
 		int i = 0;
 		while(i < lenOption) {
 			String currType;
-			
+			String currentOption = optionParse[i];
+//			System.out.println("currentOption: " + currentOption);
 			if(i >= lenTypes) {
 				currType = typesParse[lenTypes - 1].trim();
 			}
-			else
+			else {
 				currType = typesParse[i].trim();
-			
-			Option currOption = new Option(optionParse[i].trim(), Type.BOOLEAN);
-			if(currType.equals("String")) {
-				currOption.setType(Type.STRING);
 			}
-			else if(currType.equals("Integer")) {
-				currOption.setType(Type.INTEGER);
+			if(currentOption.contains("-")) {
+				String[] multipleOptions = currentOption.split("-");
+//				System.out.println("MultipleOptions: " + multipleOptions[0] + " ? " + multipleOptions[1]);
+				String groupName = multipleOptions[0].substring(0,multipleOptions[0].length()-1);
+//				System.out.println("groupname: " + groupName);
+				String startRange = Character.toString(multipleOptions[0].charAt(multipleOptions[0].length()-1));
+				String endRange = multipleOptions[1];
+				if(!(isNumeric(endRange) || isAlpha(endRange))
+					|| (isNumeric(startRange) && isAlpha(endRange))
+					|| (isNumeric(endRange) && isAlpha(endRange))){
+					i++;
+					continue;
+				}
+				else if(isNumeric(startRange)) {
+					int start = Integer.parseInt(startRange);
+					int end = Integer.parseInt(endRange);
+					while(start <= end) {
+//						System.out.println(groupName + start);
+//						System.out.println("Here");
+						Option currOption = new Option(groupName + start, Type.BOOLEAN);
+						if(currType.equals("String")) {
+							currOption.setType(Type.STRING);
+						}
+						else if(currType.equals("Integer")) {
+							currOption.setType(Type.INTEGER);
+						}
+						else if(currType.equals("Character")) {
+							currOption.setType(Type.CHARACTER);
+						}
+						addOption(currOption);
+						start++;
+					}
+				}
+				
+				else { 
+					while(startRange.compareTo(endRange) <= 0) {
+						Option currOption = new Option(groupName + startRange, Type.BOOLEAN);
+						if(currType.equals("String")) {
+							currOption.setType(Type.STRING);
+						}
+						else if(currType.equals("Integer")) {
+							currOption.setType(Type.INTEGER);
+						}
+						else if(currType.equals("Character")) {
+							currOption.setType(Type.CHARACTER);
+						}
+						addOption(currOption);
+						startRange = String.valueOf( (char) (startRange.charAt(0) + 1));;
+					}
+				}
 			}
-			else if(currType.equals("Character")) {
-				currOption.setType(Type.CHARACTER);
+			else {
+				Option currOption = new Option(optionParse[i].trim(), Type.BOOLEAN);
+				if(currType.equals("String")) {
+					currOption.setType(Type.STRING);
+				}
+				else if(currType.equals("Integer")) {
+					currOption.setType(Type.INTEGER);
+				}
+				else if(currType.equals("Character")) {
+					currOption.setType(Type.CHARACTER);
+				}
+				addOption(currOption);
 			}
-			addOption(currOption);
 			i++;
-		}
+		}//for
 	}
 
 	
-	private Type getType(String option) {
+	//copied from somewhere please change up 
+	public static boolean isAlpha(String s)
+    {
+        if (s == null) {
+            return false;
+        }
+ 
+        for (int i = 0; i < s.length(); i++)
+        {
+            char c = s.charAt(i);
+            if (!(c >= 'A' && c <= 'Z') && !(c >= 'a' && c <= 'z')) {
+                return false;
+            }
+        }
+        return true;
+    }
+	
+	public static boolean isNumeric(String s)
+    {
+        if (s == null) {
+            return false;
+        }
+ 
+        for (int i = 0; i < s.length(); i++)
+        {
+            char c = s.charAt(i);
+            if (!(c >= '0' && c <= '9')) {
+                return false;
+            }
+        }
+        return true;
+    }
+	
+	public Type getType(String option) {
 		Type type = optionMap.getType(option);
 		return type;
 	}

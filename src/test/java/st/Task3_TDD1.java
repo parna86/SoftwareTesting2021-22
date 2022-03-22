@@ -21,8 +21,8 @@ public class Task3_TDD1 {
 	
 	@Test
 	public void test1() {
-		parser.addAll("option1 option2", "o", "String Boolean Character Integer");
-
+		parser.addAll("optiona-c option4", "String Integer");
+		assertTrue(parser.optionExists("option4"));
 	}
 	
 //	@Test
