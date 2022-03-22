@@ -34,6 +34,8 @@ public class OptionMap {
         		shortcuts.put(shortcut, option);
         	}
     	}
+    	System.out.println("Options: " + options);
+    	System.out.println("Shortcuts: " + shortcuts);
     }
     
     public Option getOption(String key) {

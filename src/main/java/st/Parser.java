@@ -221,6 +221,78 @@ public class Parser {
 		return 0;
 		
 	}
+	
+	public void addAll(String options, String shortcuts, String types) {
+		String[] optionParse = options.split(" ");
+		String[] shortcutParse = shortcuts.split(" ");
+		String[] typesParse = types.split(" ");
+		int lenOption = optionParse.length; 
+		int lenShortcut = shortcutParse.length;
+		int lenTypes = typesParse.length;
+		
+		int i = 0;
+		while(i < lenOption) {
+			String currType;
+			
+			if(i >= lenTypes) {
+				currType = typesParse[lenTypes - 1].trim();
+			}
+			else
+				currType = typesParse[i].trim();
+			
+			Option currOption = new Option(optionParse[i].trim(), Type.BOOLEAN);
+			if(currType.equals("String")) {
+				currOption.setType(Type.STRING);
+			}
+			else if(currType.equals("Integer")) {
+				currOption.setType(Type.INTEGER);
+			}
+			if(currType.equals("Character")) {
+				currOption.setType(Type.CHARACTER);
+			}
+			
+			
+			if(i >= lenShortcut) {
+				addOption(currOption);
+			}
+			else{
+				addOption(currOption, shortcutParse[i].trim());
+			}
+			i++;
+		}
+		
+	}
+	
+	public void addAll(String options, String types) {
+		String[] optionParse = options.split(" ");
+		String[] typesParse = types.split(" ");
+		int lenOption = optionParse.length; 
+		int lenTypes = typesParse.length;
+		
+		int i = 0;
+		while(i < lenOption) {
+			String currType;
+			
+			if(i >= lenTypes) {
+				currType = typesParse[lenTypes - 1].trim();
+			}
+			else
+				currType = typesParse[i].trim();
+			
+			Option currOption = new Option(optionParse[i].trim(), Type.BOOLEAN);
+			if(currType.equals("String")) {
+				currOption.setType(Type.STRING);
+			}
+			else if(currType.equals("Integer")) {
+				currOption.setType(Type.INTEGER);
+			}
+			if(currType.equals("Character")) {
+				currOption.setType(Type.CHARACTER);
+			}
+			addOption(currOption);
+			i++;
+		}
+	}
 
 	
 	private Type getType(String option) {

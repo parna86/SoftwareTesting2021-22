@@ -1,18 +1,126 @@
 package st;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class Task1_1_FunctionalTest {
-
+public class Task2_3_FunctionalTest {
 	private Parser parser;
-	
+
 	@Before
 	public void setUp() {
 		parser = new Parser();
+		Option opString = new Option("optionString", Type.STRING);
+		Option opInteger = new Option("optionInteger", Type.INTEGER);
+		Option opBoolean = new Option("optionBoolean", Type.BOOLEAN);
+		Option opCharacter = new Option("optionCharacter", Type.CHARACTER);
+		parser.addOption(opInteger);
+		parser.addOption(opString);
+		parser.addOption(opBoolean);
+		parser.addOption(opCharacter);
 	}
+	
+	
+	/*
+	 *  testing get functions 
+	 * */
+	@Test
+	public void getIntegerTestOne() {
+		parser.parse("--optionInteger 23");
+		assertEquals(parser.getInteger("optionInteger"), 23);
+	}
+	
+	@Test
+	public void getIntegerTestTwo() {
+		parser.parse("--optionBoolean abcd");
+		assertEquals(parser.getInteger("optionBoolean"), 1);
+	}
+	
+	@Test
+	public void getIntegerTestThree() {
+		parser.parse("--optionInteger \0");
+		assertEquals(parser.getInteger("optionInteger"), 0);
+	}
+	
+	@Test
+	public void getIntegerTestFour() {
+		parser.parse("--optionInteger");
+		assertEquals(parser.getInteger("optionInteger"), 0);
+	}
+	
+	@Test
+	public void getIntegerTestFive() {
+		parser.parse("--optionString abcd");
+		assertEquals(parser.getInteger("optionString"), 0);
+	}
+	
+	@Test
+	public void getBooleanTestOne() {
+		parser.parse("--optionBoolean true");
+		assertEquals(parser.getBoolean("optionBoolean"), true);
+	}
+	
+	
+	@Test
+	public void getStringTestOne() {
+		parser.parse("--optionString helloWorld");
+		assertEquals(parser.getString("optionString"), "helloWorld");
+	}
+	
+	
+	@Test
+	public void getCharacterTestOne() {
+		parser.parse("--optionCharacter a");
+		assertEquals(parser.getCharacter("optionCharacter"), 'a');
+	}
+	
+	@Test 
+	public void setShortcutTestOne() {
+		parser.setShortcut("optionInteger", "shortcut");
+		assertEquals(parser.shortcutExists("shortcut"), true);
+	}
+	
+	@Test 
+	public void setShortcutTestTwo() {
+		parser.setShortcut("optionInteger", "shortcut");
+		parser.setShortcut("optionInteger", "shortcutOne");
+		assertEquals(parser.shortcutExists("shortcutOne"), true);
+	}
+	
+	@Test
+	public void replaceTestOne() {
+		parser.parse("--optionString helloWorld");
+		parser.replace("optionString", "helloWorld", "hello");
+		assertEquals(parser.getString("optionString"), "hello");
+	}
+	
+	@Test
+	public void replaceTestTwo() {
+		parser.parse("--optionCharacter h");
+		parser.replace("optionCharacter", "h", "x");
+		assertEquals(parser.getCharacter("optionCharacter"), 'x');
+	}
+	@Test
+	public void replaceTestThree() {
+		parser.parse("--optionInteger 12");
+		parser.replace("optionInteger", "12", "21");
+		assertEquals(parser.getInteger("optionInteger"), 21);
+	}
+	@Test
+	public void replaceTestFour() {
+		parser.parse("--optionBoolean true");
+		parser.replace("optionBoolean", "true", "false");
+		assertEquals(parser.getBoolean("optionBoolean"), false);
+	}
+	
+	@Test
+	public void optionExistsTestOne() {
+		assertEquals(parser.optionExists("optionInteger"), true);
+	}
+	
+
+	
 	
 	/*
 	 * BUG 1 - empty shortcuts are considered valid 
@@ -88,7 +196,7 @@ public class Task1_1_FunctionalTest {
 	public void bugSeven() {
 		parser.addOption(new Option("hello", Type.STRING), "o");
 		parser.parse("--hello=1122334455");
-		assertEquals(parser.getInteger("hello"), 1122334455);
+		assertEquals(parser.getInteger("hello"), "1122334455");
 	}
 //	
 //	
@@ -99,7 +207,7 @@ public class Task1_1_FunctionalTest {
 	public void bugEight() { 
 		parser.addOption(new Option("output", Type.INTEGER), "O");
 		parser.addOption(new Option("output", Type.INTEGER), "K");
-		assertEquals(parser.shortcutExists("O"), parser.shortcutExists("K"));
+		assertEquals(parser.optionOrShortcutExists("O"), false);
 	}
 //	
 //	
@@ -122,16 +230,16 @@ public class Task1_1_FunctionalTest {
 		parser.addOption(new Option("output", Type.CHARACTER), "o");
 		parser.parse("--output=\0");
 		
-		assertEquals(parser.getCharacter("output") , '\0');		
+		assertEquals(parser.getCharacter("output") , "\0");		
 	}
 //	
 //	/*
 //	 * BUG 11 - A % in the option name is considered valid, when it should not be
 //	 * */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void bugEleven() {
-		parser.addOption(new Option("hel%lo", Type.BOOLEAN), "k");
-		assertEquals(parser.optionExists("hel%lo"), false);
+		parser.addOption(new Option("he%llo", Type.BOOLEAN), "k");
+		assertEquals(parser.optionExists("he%llo"), false);
 	}
 //	
 //	
@@ -155,8 +263,8 @@ public class Task1_1_FunctionalTest {
 	@Test
 	public void bugThirteen() {
 		parser.addOption(new Option("option", Type.STRING), "o");
-		parser.parse("--option='jiogirg{DASH}={DASH}foghor'");
-		assertEquals(parser.getString("option"), "jiogirg-=-foghor"); //RIP
+		parser.parse("--option '='");
+		assertEquals(parser.getString("option"), "'='");
 	}
 	
 	
@@ -178,7 +286,7 @@ public class Task1_1_FunctionalTest {
 	public void bugFifteen() {
 		parser.addOption(new Option("option", Type.STRING), "o");
 		parser.parse("--option=12345632455");
-		assertEquals(parser.getInteger("option"), 0);
+		assertEquals(parser.getInteger("option"), "12345632455");
 	}
 	
 	/*
@@ -220,9 +328,9 @@ public class Task1_1_FunctionalTest {
 	 * */
 	@Test 
 	public void bugNineteen() {
-		parser.addOption(new Option("option1", Type.STRING), "o");
-		parser.parse("--option1 \"jiogirg-foghor\"");
-		assertEquals(parser.getString("option1"), "jiogirg-foghor");
+		parser.addOption(new Option("op1", Type.STRING), "o");
+		parser.parse("--op1=\"-\"");
+		assertEquals(parser.getString("op1"), "\"-\"");
 	}
 	
 	/*
@@ -231,7 +339,7 @@ public class Task1_1_FunctionalTest {
 	@Test
 	public void bugTwenty() {
 		parser.addOption(new Option("hello", Type.STRING), "o");
-		parser.parse("--hello=there Aparna");
-		assertEquals(parser.getString("--hello"), "there");
+		parser.parse("--hello=there             Aparna");
+		assertEquals(parser.getString("--hello"), "there             Aparna");
 	}
 }
