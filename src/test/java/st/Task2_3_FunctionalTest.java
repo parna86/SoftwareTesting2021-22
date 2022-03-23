@@ -140,20 +140,6 @@ private Parser parser;
 	}
 	
 	@Test
-	public void replaceTestSix() {
-		parser.parse("--optionBoolean true");
-		parser.replace("optionBoolean", "true", "false");
-		assertTrue(parser.getBoolean("optionBoolean") == false);
-	}
-	
-	@Test
-	public void replaceTestSeven() {
-		parser.parse("--optionBoolean true");
-		parser.replace("--optionBoolean", "true", "false");
-		assertFalse(parser.getBoolean("optionBoolean"));
-	}
-	
-	@Test
 	public void replaceTestEight() {
 		parser.addOption(new Option("newOption", Type.STRING), "shortcut");
 		parser.parse("-shortcut thisisinteresting");

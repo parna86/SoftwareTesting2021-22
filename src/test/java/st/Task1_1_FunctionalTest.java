@@ -220,7 +220,7 @@ public class Task1_1_FunctionalTest {
 		assertEquals(parser.getString("hello"), "ST");
 	}
 	
-	/*
+	/* 
 	 * BUG NINETEEN - dashes are not handled correctly with double quotes
 	 */
 	@Test 
