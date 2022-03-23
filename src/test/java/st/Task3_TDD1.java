@@ -19,11 +19,6 @@ public class Task3_TDD1 {
 //		assertTrue(parser.optionExists("option1"));
 //	}
 	
-	@Test
-	public void test1() {
-		parser.addAll("   g129-11 op2 op!!3 op4","opp3-8", "String Integer Boolean");
-		assertTrue(parser.optionExists("option4"));
-	}
 	
 //	@Test
 //	public void test() {

@@ -38,7 +38,7 @@ public class OptionMap {
     	System.out.println("Shortcuts: " + shortcuts);
     }
     
-    public Option getOption(String key) {
+	public Option getOption(String key) {
     	
     	if (options.containsKey(key)) {
     		return options.get(key);
@@ -113,7 +113,7 @@ public class OptionMap {
     	}
     }
     
-    private boolean isOptionValid(Option o, String shortcut) {
+	private boolean isOptionValid(Option o, String shortcut) {
     	if (o.getName() == null) {
     		return false;
     	}
