@@ -240,12 +240,15 @@ public class Task3_Parser {
 				String groupName = multipleOptions[0].substring(0,multipleOptions[0].length()-1);
 				String startRange = Character.toString(multipleOptions[0].charAt(multipleOptions[0].length()-1));
 				String endRange = multipleOptions[1];
-				if(!(isNumeric(endRange) || isAlpha(endRange))
-					|| (isNumeric(startRange) && isAlpha(endRange))
-					|| (isNumeric(endRange) && isAlpha(endRange))){
-					break; //add something here
-				}
-				else if(isNumeric(startRange)) {
+				if(!(isNumber(endRange) || isAlphabet(endRange))
+						|| (isNumber(startRange) && isAlphabet(endRange))
+						|| (isNumber(endRange) && isAlphabet(endRange))
+						|| Character.isUpperCase(startRange.charAt(0)) && Character.isLowerCase(endRange.charAt(0))
+						|| Character.isUpperCase(endRange.charAt(0)) && Character.isLowerCase(startRange.charAt(0))
+						){
+						break;
+					}
+				else if(isNumber(startRange)) {
 					int start = Integer.parseInt(startRange);
 					int end = Integer.parseInt(endRange);
 					if(start <= end) {
@@ -276,7 +279,7 @@ public class Task3_Parser {
 						}
 					}
 				}
-			}//if
+			}
 			else {
 				newShortcuts.add(shortcutParse[j]);
 			}
@@ -298,13 +301,16 @@ public class Task3_Parser {
 				String groupName = multipleOptions[0].substring(0,multipleOptions[0].length()-1);
 				String startRange = Character.toString(multipleOptions[0].charAt(multipleOptions[0].length()-1));
 				String endRange = multipleOptions[1];
-				if(!(isNumeric(endRange) || isAlpha(endRange))
-					|| (isNumeric(startRange) && isAlpha(endRange))
-					|| (isNumeric(endRange) && isAlpha(endRange))){
+				if(!(isNumber(endRange) || isAlphabet(endRange))
+					|| (isNumber(startRange) && isAlphabet(endRange))
+					|| (isNumber(endRange) && isAlphabet(endRange))
+					|| Character.isUpperCase(startRange.charAt(0)) && Character.isLowerCase(endRange.charAt(0))
+					|| Character.isUpperCase(endRange.charAt(0)) && Character.isLowerCase(startRange.charAt(0))
+					){
 					i++;
 					continue;
 				}
-				else if(isNumeric(startRange)) {
+				else if(isNumber(startRange)) {
 					int start = Integer.parseInt(startRange);
 					int end = Integer.parseInt(endRange);
 					if(start <= end) {
@@ -347,14 +353,14 @@ public class Task3_Parser {
 							if(currType.equals("String")) {
 								currOption.setType(Type.STRING);
 							}
+							else if(currType.equals("Boolean")) {
+								currOption.setType(Type.BOOLEAN);
+							}
 							else if(currType.equals("Integer")) {
 								currOption.setType(Type.INTEGER);
 							}
 							else if(currType.equals("Character")) {
 								currOption.setType(Type.CHARACTER);
-							}
-							else if(currType.equals("Boolean")) {
-								currOption.setType(Type.BOOLEAN);
 							}
 							else {
 								throw new Exception("Illegal type");
@@ -384,14 +390,15 @@ public class Task3_Parser {
 							if(currType.equals("String")) {
 								currOption.setType(Type.STRING);
 							}
+							else if(currType.equals("Boolean")) {
+								currOption.setType(Type.BOOLEAN);
+							}
+
 							else if(currType.equals("Integer")) {
 								currOption.setType(Type.INTEGER);
 							}
 							else if(currType.equals("Character")) {
 								currOption.setType(Type.CHARACTER);
-							}
-							else if(currType.equals("Boolean")) {
-								currOption.setType(Type.BOOLEAN);
 							}
 							else {
 								throw new Exception("Illegal type");
@@ -418,14 +425,15 @@ public class Task3_Parser {
 							if(currType.equals("String")) {
 								currOption.setType(Type.STRING);
 							}
+							else if(currType.equals("Boolean")) {
+								currOption.setType(Type.BOOLEAN);
+							}
+
 							else if(currType.equals("Integer")) {
 								currOption.setType(Type.INTEGER);
 							}
 							else if(currType.equals("Character")) {
 								currOption.setType(Type.CHARACTER);
-							}
-							else if(currType.equals("Boolean")) {
-								currOption.setType(Type.BOOLEAN);
 							}
 							else {
 								throw new Exception("Illegal type");
@@ -453,14 +461,14 @@ public class Task3_Parser {
 				if(currType.equals("String")) {
 					currOption.setType(Type.STRING);
 				}
+				else if(currType.equals("Boolean")) {
+					currOption.setType(Type.BOOLEAN);
+				}
 				else if(currType.equals("Integer")) {
 					currOption.setType(Type.INTEGER);
 				}
 				else if(currType.equals("Character")) {
 					currOption.setType(Type.CHARACTER);
-				}
-				else if(currType.equals("Boolean")) {
-					currOption.setType(Type.BOOLEAN);
 				}
 				else {
 					throw new Exception("Illegal type");
@@ -480,7 +488,7 @@ public class Task3_Parser {
 				}
 			}
 			i++;
-		}//for
+		}
 		
 	}
 	
@@ -507,13 +515,16 @@ public class Task3_Parser {
 				String groupName = multipleOptions[0].substring(0,multipleOptions[0].length()-1);
 				String startRange = Character.toString(multipleOptions[0].charAt(multipleOptions[0].length()-1));
 				String endRange = multipleOptions[1];
-				if(!(isNumeric(endRange) || isAlpha(endRange))
-					|| (isNumeric(startRange) && isAlpha(endRange))
-					|| (isNumeric(endRange) && isAlpha(endRange))){
-					i++;
-					continue;
+				if(!(isNumber(endRange) || isAlphabet(endRange))
+					|| (isNumber(startRange) && isAlphabet(endRange))
+					|| (isNumber(endRange) && isAlphabet(endRange))
+					|| Character.isUpperCase(startRange.charAt(0)) && Character.isLowerCase(endRange.charAt(0))
+					|| Character.isUpperCase(endRange.charAt(0)) && Character.isLowerCase(startRange.charAt(0))
+					){
+						i++;
+						continue;
 				}
-				else if(isNumeric(startRange)) {
+				else if(isNumber(startRange)) {
 					int start = Integer.parseInt(startRange);
 					int end = Integer.parseInt(endRange);
 					if(start < end) {
@@ -522,14 +533,14 @@ public class Task3_Parser {
 							if(currType.equals("String")) {
 								currOption.setType(Type.STRING);
 							}
+							else if(currType.equals("Boolean")) {
+								currOption.setType(Type.BOOLEAN);
+							}
 							else if(currType.equals("Integer")) {
 								currOption.setType(Type.INTEGER);
 							}
 							else if(currType.equals("Character")) {
 								currOption.setType(Type.CHARACTER);
-							}
-							else if(currType.equals("Boolean")) {
-								currOption.setType(Type.BOOLEAN);
 							}
 							else {
 								throw new Exception("Illegal type");
@@ -550,14 +561,14 @@ public class Task3_Parser {
 							if(currType.equals("String")) {
 								currOption.setType(Type.STRING);
 							}
+							else if(currType.equals("Boolean")) {
+								currOption.setType(Type.BOOLEAN);
+							}
 							else if(currType.equals("Integer")) {
 								currOption.setType(Type.INTEGER);
 							}
 							else if(currType.equals("Character")) {
 								currOption.setType(Type.CHARACTER);
-							}
-							else if(currType.equals("Boolean")) {
-								currOption.setType(Type.BOOLEAN);
 							}
 							else {
 								throw new Exception("Illegal type");
@@ -581,14 +592,14 @@ public class Task3_Parser {
 							if(currType.equals("String")) {
 								currOption.setType(Type.STRING);
 							}
+							else if(currType.equals("Boolean")) {
+								currOption.setType(Type.BOOLEAN);
+							}
 							else if(currType.equals("Integer")) {
 								currOption.setType(Type.INTEGER);
 							}
 							else if(currType.equals("Character")) {
 								currOption.setType(Type.CHARACTER);
-							}
-							else if(currType.equals("Boolean")) {
-								currOption.setType(Type.BOOLEAN);
 							}
 							else {
 								throw new Exception("Illegal type");
@@ -609,14 +620,14 @@ public class Task3_Parser {
 							if(currType.equals("String")) {
 								currOption.setType(Type.STRING);
 							}
+							else if(currType.equals("Boolean")) {
+								currOption.setType(Type.BOOLEAN);
+							}
 							else if(currType.equals("Integer")) {
 								currOption.setType(Type.INTEGER);
 							}
 							else if(currType.equals("Character")) {
 								currOption.setType(Type.CHARACTER);
-							}
-							else if(currType.equals("Boolean")) {
-								currOption.setType(Type.BOOLEAN);
 							}
 							else {
 								throw new Exception("Illegal type");
@@ -638,14 +649,14 @@ public class Task3_Parser {
 				if(currType.equals("String")) {
 					currOption.setType(Type.STRING);
 				}
+				else if(currType.equals("Boolean")) {
+					currOption.setType(Type.BOOLEAN);
+				}
 				else if(currType.equals("Integer")) {
 					currOption.setType(Type.INTEGER);
 				}
 				else if(currType.equals("Character")) {
 					currOption.setType(Type.CHARACTER);
-				}
-				else if(currType.equals("Boolean")) {
-					currOption.setType(Type.BOOLEAN);
 				}
 				else {
 					throw new Exception("Illegal type");
@@ -659,36 +670,31 @@ public class Task3_Parser {
 				}
 			}
 			i++;
-		}//for
+		}
 	}
 
 	
-	//copied from somewhere please change up 
-	public static boolean isAlpha(String s)
+	public static boolean isAlphabet(String str)
     {
-        if (s == null) {
-            return false;
-        }
+        if (str == null) return false;
  
-        for (int i = 0; i < s.length(); i++){
-            char c = s.charAt(i);
-            if (!(c >= 'A' && c <= 'Z') && !(c >= 'a' && c <= 'z')) {
+        for (int i = 0; i < str.length(); i++){
+            char ch = str.charAt(i);
+            if (!(ch >= 'A' && ch <= 'Z') && !(ch >= 'a' && ch <= 'z')) {
                 return false;
             }
         }
         return true;
     }
 	
-	public static boolean isNumeric(String s)
+	public static boolean isNumber(String str)
     {
-        if (s == null) {
-            return false;
-        }
+        if (str == null) return false;
  
-        for (int i = 0; i < s.length(); i++)
+        for (int i = 0; i < str.length(); i++)
         {
-            char c = s.charAt(i);
-            if (!(c >= '0' && c <= '9')) {
+            char ch = str.charAt(i);
+            if (!(ch >= '0' && ch <= '9')) {
                 return false;
             }
         }

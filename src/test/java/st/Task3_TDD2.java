@@ -12,8 +12,6 @@ public class Task3_TDD2 {
 	public void setup() {
 		parser = new Task3_Parser();
 	}
-	
-	
 	/*
 	 * Standard usage of addAll 
 	 */
@@ -132,9 +130,21 @@ public class Task3_TDD2 {
 	
 	@Test
 	public void addAllNewTest3() throws Exception{
-		parser.addAll(, null);
+		parser.addAll("option1-3", "o3-1", "String");
+		assertTrue(parser.optionExists("option3"));
 	}
 	
+	@Test
+	public void addAllNewTest4() throws Exception{
+		parser.addAll("optionA-c", "o1-3", "String");
+		assertFalse(parser.optionExists("optionA"));
+	}
+	
+	@Test
+	public void addAllNewTest5() throws Exception{
+		parser.addAll("optionA-B", "oa-C", "String");
+		assertFalse(parser.shortcutExists("oa"));
+	}
 }
 
 

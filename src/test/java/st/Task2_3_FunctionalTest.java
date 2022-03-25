@@ -25,17 +25,10 @@ private Parser parser;
 	/*
 	 *  testing get functions 
 	 * */
-	@Test
-	public void getIntegerTestOne() {
-		parser.parse("--optionInteger 23");
-		assertEquals(parser.getInteger("optionInteger"), 23);
-	}
 	
-	
-	@Test
-	public void getIntegerTestTwo() {
-		parser.parse("--optionBoolean abcd");
-		assertEquals(parser.getInteger("optionBoolean"), 1);
+	@Test 
+	public void getCombinedTestOne(){
+		assertEquals(parser.parse("--optionInteger 23 --optionBoolean abcd --optionCharacter c --optionString hello"), 0);
 	}
 	
 	@Test
@@ -56,12 +49,6 @@ private Parser parser;
 		assertEquals(parser.getInteger("optionString"), 0);
 	}
 	
-	@Test
-	public void getIntegerTestSix() {
-		parser.parse("--optionCharacter a");
-		assertEquals(parser.getInteger("optionCharacter"), 97);
-	}
-	
 	@Test(expected = IllegalArgumentException.class)
 	public void getIntegerTestSeven() {
 		parser.addOption(new Option("hello", Type.NOTYPE)); 
@@ -74,13 +61,6 @@ private Parser parser;
 	public void getBooleanTestOne() {
 		parser.parse("--optionBoolean true");
 		assertEquals(parser.getBoolean("optionBoolean"), true);
-	}
-	
-	
-	@Test
-	public void getStringTestOne() {
-		parser.parse("--optionString helloWorld");
-		assertEquals(parser.getString("optionString"), "helloWorld");
 	}
 	
 	
