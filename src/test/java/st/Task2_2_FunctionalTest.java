@@ -343,15 +343,17 @@ private Parser parser;
 		parser.toString();
 	}
 	
+	@Test
+	public void weirdQuotesTestOne() {
+		parser.parse("--optionString \"hello\"");
+		assertEquals(parser.getString("optionString"), "hello");
+	}
 	
-	
-	//COULDN'T TEST OPTIONMAP.TOSTRING???
-	
-	//CAN NEVER REACH LINE 61 OF PARSER.JAVA
-	
-	
-	//Can never reach line 55 or 46 of OptionMap.java as the condition before entering the function checks 
-	//if the option exists
+	@Test
+	public void weirdQuotesTestTwo() {
+		parser.parse("--optionString \'hello\'");
+		assertEquals(parser.getString("optionString"), "hello");
+	}
 	
 	/*
 	 * 
@@ -570,14 +572,14 @@ private Parser parser;
 		assertEquals(parser.getString("hello"), "ST");
 	}
 	
-	/*
+	/* 
 	 * BUG NINETEEN - dashes are not handled correctly with double quotes
 	 */
-	@Test 
+	@Test(expected = RuntimeException.class)
 	public void bugNineteen() {
 		parser.addOption(new Option("option1", Type.STRING), "o");
-		parser.parse("--option1 \"jiogirg-foghor\"");
-		assertEquals(parser.getString("option1"), "jiogirg-foghor");
+		parser.parse("--option1=\"-\"");
+		assertEquals(parser.getString("option1"), "-");
 	}
 	
 	/*
