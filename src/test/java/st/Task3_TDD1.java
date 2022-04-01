@@ -69,6 +69,24 @@ public class Task3_TDD1 {
 	}
 	
 	/*
+	 * No shortcuts
+	 */
+	@Test
+	public void addAllTestSeven() throws Exception{
+		parser.addAll("option1 option2", "String Integer");
+		assertTrue(parser.optionExists("option1"));
+	}
+	
+	/*
+	 * No shortcuts
+	 */
+	@Test
+	public void addAllTestEight() throws Exception{
+		parser.addAll("option1 option2", "String");
+		assertEquals(parser.getType("option2"), Type.STRING);
+	}
+	
+	/*
 	 * Grouped options only
 	 */
 	@Test
@@ -85,6 +103,7 @@ public class Task3_TDD1 {
 		parser.addAll("option1 option2 option3", "o1-3", "String Integer");
 		assertTrue(parser.shortcutExists("o3"));
 	}
+	
 	
 	/*
 	 * Grouped shortcuts and options
