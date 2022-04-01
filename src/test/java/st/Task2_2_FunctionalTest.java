@@ -507,17 +507,16 @@ private Parser parser;
 	/*
 	 * BUG THIRTEEN - the equals sign is not handled correctly when used with single quotes
 	 * */
-	@Test
+	@Test(expected = RuntimeException.class)
 	public void bugThirteen() {
 		parser.addOption(new Option("option", Type.STRING), "o");
-		parser.parse("--option='{DASH}={DASH}'");
-		assertEquals(parser.getString("option"), "'-=-'"); //RIP
+		parser.parse("--option='='");
+		assertEquals(parser.getString("option"), "="); //RIP
 	}
 	
 	
 	/*
-	 * BUG FOURTEEN - if the input contains a \\n, the input is not handled properly.
-	 * 
+	 * BUG FOURTEEN - if the input contains a \\n, the input is not handled properly. 
 	 */
 	@Test
 	public void bugFourteen() {

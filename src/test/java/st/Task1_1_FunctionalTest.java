@@ -154,13 +154,14 @@ public class Task1_1_FunctionalTest {
 	
 	
 	/*
-	 * BUG THIRTEEN - the equals sign is not handled correctly when used with single quotes
+	 * BUG THIRTEEN - equals is not a valid input for values, should throw a 
+	 * runtime exception but does not throw any errors
 	 * */
-	@Test
+	@Test(expected = RuntimeException.class)
 	public void bugThirteen() {
 		parser.addOption(new Option("option", Type.STRING), "o");
 		parser.parse("--option='='");
-		assertEquals(parser.getString("option"), "'='"); //RIP
+		assertEquals(parser.getString("option"), "="); //RIP
 	}
 	
 	
@@ -223,11 +224,11 @@ public class Task1_1_FunctionalTest {
 	/* 
 	 * BUG NINETEEN - dashes are not handled correctly with double quotes
 	 */
-	@Test 
+	@Test(expected = RuntimeException.class)
 	public void bugNineteen() {
 		parser.addOption(new Option("option1", Type.STRING), "o");
-		parser.parse("--option1 \"jiogirg-foghor\"");
-		assertEquals(parser.getString("option1"), "jiogirg-foghor");
+		parser.parse("--option1=\"-\"");
+		assertEquals(parser.getString("option1"), "-");
 	}
 	
 	/*
