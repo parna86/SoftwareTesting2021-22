@@ -21,17 +21,11 @@ private Parser parser;
 		parser.addOption(opCharacter);
 	}
 	
-	
-	/*
-	 *  testing get functions 
-	 * */
 	@Test
 	public void getIntegerTestOne() {
 		parser.parse("--optionInteger 23");
 		assertEquals(parser.getInteger("optionInteger"), 23);
 	}
-	
-	//removed redundant getInteger invalid tests
 	
 	@Test
 	public void getIntegerTestTwo() {
@@ -58,26 +52,6 @@ private Parser parser;
 		//reaches below line
 		assertEquals(parser.getInteger("hello"), 0);
 	}
-	
-//	@Test - used in replace
-//	public void getBooleanTestOne() {
-//		parser.parse("--optionBoolean true");
-//		assertEquals(parser.getBoolean("optionBoolean"), true);
-//	}
-	
-//	//get string is used everywhere else for testing
-//	@Test
-//	public void getStringTestOne() {
-//		parser.parse("--optionString helloWorld");
-//		assertEquals(parser.getString("optionString"), "helloWorld");
-//	}
-	
-	
-//	@Test - used in replace
-//	public void getCharacterTestOne() {
-//		parser.parse("--optionCharacter a");
-//		assertEquals(parser.getCharacter("optionCharacter"), 'a');
-//	}
 	
 	@Test 
 	public void setShortcutTestOne() {
@@ -118,28 +92,6 @@ private Parser parser;
 		parser.replace("optionInteger", "12", "21");
 		assertEquals(parser.getInteger("optionInteger"), 21);
 	}
-
-	
-//	@Test
-//	public void replaceTestFour() {
-//		parser.parse("--optionInteger 12");
-//		parser.replace("optionInteger", "12", "21");
-//		assertFalse(parser.getInteger("optionInteger") == 18);
-//	}
-		
-//	@Test
-//	public void replaceTestFive() {
-//		parser.parse("--optionBoolean true");
-//		parser.replace("optionBoolean", "true", "false");
-//		assertEquals(parser.getBoolean("optionBoolean"), false);
-//	}
-	
-//	@Test
-//	public void replaceTestSix() {
-//		parser.parse("--optionBoolean true");
-//		parser.replace("optionBoolean", "true", "false");
-//		assertTrue(parser.getBoolean("optionBoolean") == false);
-//	}
 	
 	@Test
 	public void replaceTestSeven() {
@@ -172,36 +124,6 @@ private Parser parser;
 		assertEquals(parser.getString("shortcut"), "thisisinteresting");
 	}
 	
-	
-//	- optionExists and shorcutExists used elsewhere
-	
-//	@Test
-//	public void optionExistsTestOne() {
-//		assertEquals(parser.optionExists("optionInteger"), true);
-//	}
-//	
-//	@Test
-//	public void optionExistsTestTwo() {
-//		assertEquals(parser.optionExists("optionInt"), false);
-//	}
-	
-//	@Test(expected = IllegalArgumentException.class)
-//	public void optionExistsTestThree() {
-//		parser.addOption(new Option("", Type.BOOLEAN));
-//		parser.optionExists("");
-//	}
-//	
-//	@Test(expected = IllegalArgumentException.class)
-//	public void optionExistsTestFour() {
-//		parser.addOption(new Option("hello", Type.STRING), null);
-//		parser.shortcutExists(null);
-//	}
-	
-//	@Test
-//	public void optionOrShortcutExistsTestOne() {
-//		assertEquals(parser.optionOrShortcutExists("optionInteger"), true);
-//	}
-//	
 	@Test
 	public void optionOrShortcutExistsTestTwo() {
 		assertEquals(parser.optionOrShortcutExists("optionInt"), false);
@@ -212,44 +134,6 @@ private Parser parser;
 		parser.addOption(new Option("hello", Type.STRING), "h");
 		assertEquals(parser.optionOrShortcutExists("h"), true);
 	}
-	
-//	@Test
-//	public void shortcutExistsTestOne() {
-//		assertEquals(parser.shortcutExists("optionInteger"), false);
-//	}
-	
-//	@Test
-//	public void shortcutExistsTestTwo() {
-//		parser.setShortcut("optionInteger", "shortcut");
-//		assertEquals(parser.shortcutExists("shortcut"), true);
-//	}
-//	
-//	@Test
-//	public void shortcutExistsTestThree() {
-//		parser.setShortcut("optionInteger", "shortcut");
-//		assertEquals(parser.shortcutExists("short"), false);
-//	}
-	
-	
-	
-//	@Test
-//	public void addOptionWithShortcutTestOne() {
-//		parser.addOption(new Option("option1", Type.STRING), "shortcut");
-//		assertEquals(parser.shortcutExists("shortcut"), true);
-//	}
-	
-	
-//	@Test - regular case for parsing is covered by bug tests
-//	public void parseOne() {
-//		parser.parse("--optionInteger 1");
-//		assertTrue(parser.getInteger("optionInteger") == 1);
-//	}
-	
-//	@Test
-//	public void parseTwo() {
-//		parser.parse("--optionString hello --optionString world");
-//		assertTrue(parser.getString("optionString").equals("world"));
-//	}
 	
 	@Test
 	public void parseThree() {
@@ -268,13 +152,6 @@ private Parser parser;
 		assertEquals(parser.optionExists("world"), false);
 	}
 	
-	
-//	@Test
-//	public void getOptionTestOne() {
-//		parser.addOption(new Option("hello", Type.BOOLEAN)); 
-//		assertTrue(parser.optionExists("hello"));
-//	}
-	
 	@Test(expected = IllegalArgumentException.class)
 	public void getOptionTestTwo() {
 		parser.addOption(new Option(null, Type.BOOLEAN));
@@ -292,27 +169,6 @@ private Parser parser;
 		assertTrue(option1.equals(option2));
 	}
 	
-//	@Test - one test for invalid equals
-//	public void optionEqualsTestTwo() {
-//		Option option1 = new Option("op", Type.INTEGER);
-//		Option option2 = new Option("op", Type.BOOLEAN);
-//		assertFalse(option1.equals(option2));
-//	}
-	
-//	@Test
-//	public void optionEqualsTestThree() {
-//		Option option1 = new Option("op1", Type.BOOLEAN);
-//		Option option2 = new Option("op", Type.BOOLEAN);
-//		assertFalse(option1.equals(option2));
-//	}
-	
-//	@Test
-//	public void optionEqualsTestFour() {
-//		Option option1 = null;
-//		Option option2 = new Option("op", Type.BOOLEAN);
-//		assertFalse(option2.equals(option1));
-//	}
-	
 	@Test
 	public void optionEqualsTestFive() {
 		Option option1 = new Option("op1", Type.BOOLEAN);
@@ -329,16 +185,7 @@ private Parser parser;
 	public void toStringTestOne() {
 		parser.toString();
 	}
-	
-	
-	
-	//COULDN'T TEST OPTIONMAP.TOSTRING???
-	
-	//CAN NEVER REACH LINE 61 OF PARSER.JAVA
-	
-	
-	//Can never reach line 55 or 46 of OptionMap.java as the condition before entering the function checks 
-	//if the option exists
+
 	
 	/*
 	 * 

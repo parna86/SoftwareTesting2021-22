@@ -44,7 +44,8 @@ class Option {
 		boolean notEqual = obj == null || 
 				getClass() != obj.getClass() ||
 				(this.type != other.type) ||
-				(name == null && other.name != null) || !name.equals(other.name);
+				(name == null && other.name != null) 
+				|| !name.equals(other.name);
 		
 		return this == obj || !notEqual;
 	}

@@ -160,7 +160,6 @@ public class Task1_1_FunctionalTest {
 	@Test(expected = RuntimeException.class)
 	public void bugThirteen() {
 		parser.addOption(new Option("option", Type.STRING), "o");
-		parser.parse("--option='='");
 		assertEquals(parser.getString("option"), "="); //RIP
 	}
 	

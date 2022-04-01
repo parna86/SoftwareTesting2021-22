@@ -508,7 +508,8 @@ private Parser parser;
 	
 	/*
 	 * BUG THIRTEEN - the equals sign is not handled correctly when used with single quotes
-	 * */
+	 * removed weird bug from previous test...
+	 * */ 
 	@Test(expected = RuntimeException.class)
 	public void bugThirteen() {
 		parser.addOption(new Option("option", Type.STRING), "o");

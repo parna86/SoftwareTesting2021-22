@@ -6,23 +6,43 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class Task3_TDD2 {
-	private Parser_Task3 parser;
+	private Task3_Parser parser;
 	
 	@Before
 	public void setup() {
-		parser = new Parser_Task3();
+		parser = new Task3_Parser();
 	}
 	/*
-	 * Standard usage of addAll 
+	 * Standard usage of addAll  
 	 */
 	@Test 
-	public void addAllTestOne() throws Exception{
+	public void standardUsageTestOne() throws Exception{
 		parser.addAll("option1 option2 option3", "o1 o2 o3", "String Integer Boolean");
 		assertEquals(parser.optionExists("option2"), true);
 	}
 	
+	@Test 
+	public void standardUsageTestTwo() throws Exception{
+		parser.addAll("option1 option2 option3", "o1 o2 o3", "String Integer Boolean");
+		assertEquals(parser.getType("option3"), Type.BOOLEAN);
+	}
+	
+	@Test 
+	public void standardUsageTestThree() throws Exception{
+		parser.addAll("option1 option2 option3", "o1 o2 o3", "String Integer Boolean");
+		assertEquals(parser.shortcutExists("o1"), true);
+	}
 	/*
-	 * Too many shortcuts
+	 * Extra spaces are omitted
+	 */
+	@Test 
+	public void extraSpacesTestOne() throws Exception{
+		parser.addAll("option1   option3", "o1 o2", "String Boolean");
+		assertEquals(parser.optionExists("option3"), true);
+	}
+	
+	/*
+	 * More shortcuts than options
 	 */
 	@Test
 	public void addAllTestTwo() throws Exception{
@@ -58,15 +78,6 @@ public class Task3_TDD2 {
 	}
 	
 	/*
-	 * Spaces in the option list 
-	 */
-	@Test
-	public void addAllTestSix() throws Exception{
-		parser.addAll("  option1 option2", "o1 o2", "String Integer");
-		assertTrue(parser.optionExists("option1"));
-	}
-	
-	/*
 	 * No shortcuts
 	 */
 	@Test
@@ -76,7 +87,7 @@ public class Task3_TDD2 {
 	}
 	
 	/*
-	 * No shortcuts
+	 * No shortcuts, fewer types than options
 	 */
 	@Test
 	public void addAllTestEight() throws Exception{
@@ -85,7 +96,7 @@ public class Task3_TDD2 {
 	}
 	
 	/*
-	 * Grouped options only
+	 * Grouped options, no shortcuts
 	 */
 	@Test
 	public void groupedTestOne() throws Exception{
@@ -94,7 +105,7 @@ public class Task3_TDD2 {
 	}
 	
 	/*
-	 * Grouped shortcuts only
+	 * Grouped shortcuts only, no grouped options
 	 */
 	@Test
 	public void groupedTestTwo() throws Exception {
@@ -125,8 +136,19 @@ public class Task3_TDD2 {
 	 */
 	@Test
 	public void groupedTestFive() throws Exception{
-		parser.addAll("option3-1", "o3-o1", "String");
-		assertTrue(parser.optionExists("option2"));
+		parser.addAll("option3-1", "o3-1", "String");
+		parser.parse("-o1 hello");
+		assertEquals(parser.getString("option1"), "hello");
+	}
+	
+	/*
+	 * Increasing shortcut range, decreasing option range
+	 */
+	@Test
+	public void groupedTestSix() throws Exception{
+		parser.addAll("option3-1", "o1-3", "String");
+		parser.parse("-o3 hello");
+		assertEquals(parser.getString("option1"), "hello");
 	}
 	
 	/*
