@@ -6,11 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class Task3_TDD2 {
-	private Task3_Parser parser;
+	private Parser_Task3 parser;
 	
 	@Before
 	public void setup() {
-		parser = new Task3_Parser();
+		parser = new Parser_Task3();
 	}
 	/*
 	 * Standard usage of addAll 
