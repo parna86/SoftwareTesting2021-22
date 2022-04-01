@@ -21,8 +21,8 @@ public class Task1_1_FunctionalTest {
 	@Test(expected = RuntimeException.class)
 	public void bugOne() {
 		parser.addOption(new Option("hello", Type.STRING), "");
- 		parser.parse("- hello");
- 		assertEquals(parser.getString(""), "hello");
+ 		parser.parse("- hi");
+ 		assertEquals(parser.getString(""), "hi");
 	}
 	
 	
@@ -159,8 +159,8 @@ public class Task1_1_FunctionalTest {
 	@Test
 	public void bugThirteen() {
 		parser.addOption(new Option("option", Type.STRING), "o");
-		parser.parse("--option='jiogirg{DASH}={DASH}foghor'");
-		assertEquals(parser.getString("option"), "jiogirg-=-foghor"); //RIP
+		parser.parse("--option='='");
+		assertEquals(parser.getString("option"), "'='"); //RIP
 	}
 	
 	

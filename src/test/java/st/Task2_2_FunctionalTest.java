@@ -99,8 +99,14 @@ private Parser parser;
 	@Test 
 	public void setShortcutTestTwo() {
 		parser.setShortcut("optionInteger", "shortcut");
-		parser.setShortcut("optionInteger", "shortcutOne");
-		assertEquals(parser.shortcutExists("shortcutOne"), true);
+		parser.setShortcut(null, "shortcutOne");
+		assertEquals(parser.shortcutExists("shortcutOne"), false);
+	}
+	
+	@Test
+	public void setShortcutTestThree() {
+		parser.setShortcut("optionInteger", null);
+		assertEquals(parser.shortcutExists(null), true);
 	}
 	
 	@Test
@@ -161,6 +167,22 @@ private Parser parser;
 		assertEquals(parser.getString("shortcut"), "thatisinteresting");
 	}
 	
+	@Test(expected = RuntimeException.class)
+	public void replaceTestNine() {
+		parser.addOption(new Option("newOption", Type.STRING), "shortcut");
+		parser.parse("-shortcut thisisinteresting");
+		parser.replace("--short", "this", "that");
+		assertEquals(parser.getString("shortcut"), "thisisinteresting");
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void replaceTestTen() {
+		parser.addOption(new Option("newOption", Type.STRING), "shortcut");
+		parser.parse("-shortcut thisisinteresting");
+		parser.replace("-short", "this", "that");
+		assertEquals(parser.getString("shortcut"), "thisisinteresting");
+	}
+	
 	
 	@Test
 	public void optionExistsTestOne() {
@@ -192,6 +214,12 @@ private Parser parser;
 	@Test
 	public void optionOrShortcutExistsTestTwo() {
 		assertEquals(parser.optionOrShortcutExists("optionInt"), false);
+	}
+	
+	@Test
+	public void optionOrShortcutExistsTestThree() {
+		parser.addOption(new Option("hello", Type.STRING), "h");
+		assertEquals(parser.optionOrShortcutExists("h"), true);
 	}
 	
 	@Test
@@ -242,6 +270,8 @@ private Parser parser;
 		assertEquals(parser.parse(null), -1);
 	}
 	
+	
+	
 	//this test should pass - not sure why it is not passing
 	//potential bug?
 	@Test 
@@ -268,6 +298,50 @@ private Parser parser;
 		parser.addOption(new Option("", Type.BOOLEAN));
 	}
 	
+	@Test
+	public void optionEqualsTestOne() {
+		Option option1 = new Option("op", Type.BOOLEAN);
+		Option option2 = new Option("op", Type.BOOLEAN);
+		assertTrue(option1.equals(option2));
+	}
+	
+	@Test
+	public void optionEqualsTestTwo() {
+		Option option1 = new Option("op", Type.INTEGER);
+		Option option2 = new Option("op", Type.BOOLEAN);
+		assertFalse(option1.equals(option2));
+	}
+	
+	@Test
+	public void optionEqualsTestThree() {
+		Option option1 = new Option("op1", Type.BOOLEAN);
+		Option option2 = new Option("op", Type.BOOLEAN);
+		assertFalse(option1.equals(option2));
+	}
+	
+	@Test
+	public void optionEqualsTestFour() {
+		Option option1 = null;
+		Option option2 = new Option("op", Type.BOOLEAN);
+		assertFalse(option2.equals(option1));
+	}
+	
+	@Test
+	public void optionEqualsTestFive() {
+		Option option1 = new Option("op1", Type.BOOLEAN);
+		Option option2 = new Option(null, Type.BOOLEAN);
+		assertFalse(option2.equals(option1));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void addOptionTestOne() {
+		parser.addOption(new Option("op", Type.BOOLEAN), "%");
+	}
+	
+	@Test
+	public void toStringTestOne() {
+		parser.toString();
+	}
 	
 	
 	
@@ -436,8 +510,8 @@ private Parser parser;
 	@Test
 	public void bugThirteen() {
 		parser.addOption(new Option("option", Type.STRING), "o");
-		parser.parse("--option='jiogirg{DASH}={DASH}foghor'");
-		assertEquals(parser.getString("option"), "jiogirg-=-foghor"); //RIP
+		parser.parse("--option='{DASH}={DASH}'");
+		assertEquals(parser.getString("option"), "'-=-'"); //RIP
 	}
 	
 	
