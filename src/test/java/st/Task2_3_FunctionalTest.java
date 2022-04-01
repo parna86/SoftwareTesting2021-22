@@ -261,10 +261,6 @@ private Parser parser;
 		assertEquals(parser.parse(null), -1);
 	}
 	
-	
-	
-	//this test should pass - not sure why it is not passing
-	//potential bug?
 	@Test 
 	public void createOptionTestOne() {
 		Option a = new Option("hello", Type.BOOLEAN);
@@ -273,11 +269,11 @@ private Parser parser;
 	}
 	
 	
-	@Test
-	public void getOptionTestOne() {
-		parser.addOption(new Option("hello", Type.BOOLEAN)); 
-		assertTrue(parser.optionExists("hello"));
-	}
+//	@Test
+//	public void getOptionTestOne() {
+//		parser.addOption(new Option("hello", Type.BOOLEAN)); 
+//		assertTrue(parser.optionExists("hello"));
+//	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void getOptionTestTwo() {
@@ -303,12 +299,12 @@ private Parser parser;
 //		assertFalse(option1.equals(option2));
 //	}
 	
-	@Test
-	public void optionEqualsTestThree() {
-		Option option1 = new Option("op1", Type.BOOLEAN);
-		Option option2 = new Option("op", Type.BOOLEAN);
-		assertFalse(option1.equals(option2));
-	}
+//	@Test
+//	public void optionEqualsTestThree() {
+//		Option option1 = new Option("op1", Type.BOOLEAN);
+//		Option option2 = new Option("op", Type.BOOLEAN);
+//		assertFalse(option1.equals(option2));
+//	}
 	
 //	@Test
 //	public void optionEqualsTestFour() {
@@ -363,7 +359,7 @@ private Parser parser;
 	
 	
 	/*
-	 * - 0.2
+	 * 
 	 * BUG TWO - the parser does not parse false correctly for options of type boolean 
 	 */ 
 	@Test 
@@ -373,7 +369,7 @@ private Parser parser;
 		assertEquals(parser.getBoolean("output"), false);
 	}	
 	
-	/* - 2.5
+	/*
 	 * BUG EIGHT - When two shortcuts are passed with the same option,
 	 * a shortcut is overwritten. However, according to the specification,
 	 * multiple shortcuts for one option can exist. 
@@ -385,9 +381,7 @@ private Parser parser;
 		assertEquals(parser.shortcutExists("O"), parser.shortcutExists("K"));
 	}
 
-	
-	
-	/* -1.8
+	/* 
 	 * BUG TWELVE - When an option and a shortcut have the same name, the replace 
 	 * function does not correctly replace the right value of the shortcut 
 	 * */ 
@@ -400,9 +394,7 @@ private Parser parser;
 		assertEquals(parser.getString("-hello"), "nothing");
 	}
 	
-	
-	
-	/* -0.4
+	/* 
 	 * BUG FIFTEEN - When an int passed to a string is out of range, a bug is thrown. 
 	 * parser.getInteger does not handle it correctly and returns 0.
 	 */ 
@@ -413,7 +405,7 @@ private Parser parser;
 		assertEquals(parser.getInteger("option"), 0);
 	}
 	
-	/* -5
+	/* 
 	 * BUG NINETEEN - dashes are not handled correctly with double quotes
 	 */
 	@Test(expected = RuntimeException.class)
