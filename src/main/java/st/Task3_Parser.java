@@ -223,23 +223,34 @@ public class Task3_Parser {
 	}
 	
 	public void addAll(String options, String shortcuts, String types) throws Exception {
+		//removing extra spaces
 		options = options.trim();
 		shortcuts = shortcuts.trim();
 		types = types.trim();
+		
+		//split space separated list of options, shortcuts and types
 		String[] optionParse = options.split(" ");
 		String[] shortcutParse = shortcuts.split(" ");
 		String[] typesParse = types.split(" ");
+		
+		//new list of shortcuts that contain groups of shortcuts after ungrouping
 		List<String> newShortcuts = new ArrayList<String>();
+		
 		int lenOption = optionParse.length; 
 		int lenShortcut = shortcutParse.length;
 		int lenTypes = typesParse.length;
 		int j = 0;
+		
+		//ungrouping shortcuts if required
 		while(j < lenShortcut) {
 			if(shortcutParse[j].contains("-")) {
 				String[] multipleOptions = shortcutParse[j].split("-");
-				String groupName = multipleOptions[0].substring(0,multipleOptions[0].length()-1);
-				String startRange = Character.toString(multipleOptions[0].charAt(multipleOptions[0].length()-1));
+				String firstOption = multipleOptions[0];
+				int firstOptionLength = multipleOptions[0].length();
+				String groupName = firstOption.substring(0,firstOptionLength-1);
+				String startRange = Character.toString(firstOption.charAt(firstOptionLength-1));
 				String endRange = multipleOptions[1];
+				//checking edge cases here
 				if(!(isNumber(endRange) || isAlphabet(endRange))
 						|| (isNumber(startRange) && isAlphabet(endRange))
 						|| (isNumber(endRange) && isAlphabet(endRange))
@@ -285,6 +296,8 @@ public class Task3_Parser {
 			}
 			j++;
 		}
+		
+		
 		int i = 0;
 		int shortcutCounter = 0;
 		while(i < lenOption) {
@@ -298,9 +311,14 @@ public class Task3_Parser {
 			}
 			if(currentOption.contains("-")) {
 				String[] multipleOptions = currentOption.split("-");
-				String groupName = multipleOptions[0].substring(0,multipleOptions[0].length()-1);
-				String startRange = Character.toString(multipleOptions[0].charAt(multipleOptions[0].length()-1));
+				String firstOption = multipleOptions[0];
+				int firstOptionLength = multipleOptions[0].length();
+				String groupName = firstOption.substring(0,firstOptionLength-1);
+				
+				String startRange = Character.toString(firstOption.charAt(firstOptionLength-1));
 				String endRange = multipleOptions[1];
+				
+				//checking edge cases here
 				if(!(isNumber(endRange) || isAlphabet(endRange))
 					|| (isNumber(startRange) && isAlphabet(endRange))
 					|| (isNumber(endRange) && isAlphabet(endRange))
@@ -310,9 +328,12 @@ public class Task3_Parser {
 					i++;
 					continue;
 				}
+				
+				//if both ranges are numbers
 				else if(isNumber(startRange)) {
 					int start = Integer.parseInt(startRange);
 					int end = Integer.parseInt(endRange);
+					//increasing
 					if(start <= end) {
 						while(start <= end) {
 							Option currOption = new Option(groupName + start, Type.NOTYPE);
@@ -329,7 +350,7 @@ public class Task3_Parser {
 								currOption.setType(Type.BOOLEAN);
 							}
 							else {
-								throw new Exception("Illegal type");
+								throw new IllegalArgumentException("Illegal type");
 							}
 							try {
 								if(i >= newShortcuts.size()) {
@@ -348,6 +369,7 @@ public class Task3_Parser {
 						}
 					}
 					else{
+						//decreasing
 						while(start >= end) {
 							Option currOption = new Option(groupName + start, Type.NOTYPE);
 							if(currType.equals("String")) {
@@ -363,7 +385,7 @@ public class Task3_Parser {
 								currOption.setType(Type.CHARACTER);
 							}
 							else {
-								throw new Exception("Illegal type");
+								throw new IllegalArgumentException("Illegal type");
 							}
 							try {
 								if(i >= newShortcuts.size()) {
@@ -384,6 +406,8 @@ public class Task3_Parser {
 				}
 				
 				else { 
+					//if both are characters
+					//increasing
 					if(startRange.compareTo(endRange) <= 0) {
 						while(startRange.compareTo(endRange) <= 0) {
 							Option currOption = new Option(groupName + startRange, Type.NOTYPE);
@@ -401,7 +425,7 @@ public class Task3_Parser {
 								currOption.setType(Type.CHARACTER);
 							}
 							else {
-								throw new Exception("Illegal type");
+								throw new IllegalArgumentException("Illegal type");
 							}
 							try {
 								if(i >= newShortcuts.size()) {
@@ -419,6 +443,7 @@ public class Task3_Parser {
 							startRange = String.valueOf( (char) (startRange.charAt(0) + 1));;
 						}
 					}
+					//decreasing
 					else {
 						while(startRange.compareTo(endRange) >= 0) {
 							Option currOption = new Option(groupName + startRange, Type.NOTYPE);
@@ -436,7 +461,7 @@ public class Task3_Parser {
 								currOption.setType(Type.CHARACTER);
 							}
 							else {
-								throw new Exception("Illegal type");
+								throw new IllegalArgumentException("Illegal type");
 							}
 							try {
 								if(i >= newShortcuts.size()) {
@@ -457,6 +482,7 @@ public class Task3_Parser {
 				}
 			}
 			else {
+				//no groups of options, singletons
 				Option currOption = new Option(optionParse[i].trim(), Type.NOTYPE);
 				if(currType.equals("String")) {
 					currOption.setType(Type.STRING);
@@ -471,7 +497,7 @@ public class Task3_Parser {
 					currOption.setType(Type.CHARACTER);
 				}
 				else {
-					throw new Exception("Illegal type");
+					throw new IllegalArgumentException("Illegal type");
 				}
 				try {
 					if(i >= newShortcuts.size()) {
@@ -493,10 +519,14 @@ public class Task3_Parser {
 	}
 	
 	public void addAll(String options, String types) throws Exception {
+		//remove extra spaces
 		options = options.trim();
 		types = types.trim();
+		
+		//split space separated list of options and types
 		String[] optionParse = options.split(" ");
 		String[] typesParse = types.split(" ");
+		
 		int lenOption = optionParse.length; 
 		int lenTypes = typesParse.length;
 		
@@ -504,17 +534,24 @@ public class Task3_Parser {
 		while(i < lenOption) {
 			String currType;
 			String currentOption = optionParse[i];
+
 			if(i >= lenTypes) {
 				currType = typesParse[lenTypes - 1].trim();
 			}
 			else {
 				currType = typesParse[i].trim();
 			}
+			
 			if(currentOption.contains("-")) {
 				String[] multipleOptions = currentOption.split("-");
-				String groupName = multipleOptions[0].substring(0,multipleOptions[0].length()-1);
-				String startRange = Character.toString(multipleOptions[0].charAt(multipleOptions[0].length()-1));
+				String firstOption = multipleOptions[0];
+				int firstOptionLength = multipleOptions[0].length();
+				String groupName = firstOption.substring(0,firstOptionLength-1);
+				
+				String startRange = Character.toString(firstOption.charAt(firstOptionLength-1));
 				String endRange = multipleOptions[1];
+				
+				//checking edge cases here
 				if(!(isNumber(endRange) || isAlphabet(endRange))
 					|| (isNumber(startRange) && isAlphabet(endRange))
 					|| (isNumber(endRange) && isAlphabet(endRange))
@@ -524,9 +561,11 @@ public class Task3_Parser {
 						i++;
 						continue;
 				}
+				//if range are numbers
 				else if(isNumber(startRange)) {
 					int start = Integer.parseInt(startRange);
 					int end = Integer.parseInt(endRange);
+					//increasing
 					if(start < end) {
 						while(start <= end) {
 							Option currOption = new Option(groupName + start, Type.NOTYPE);
@@ -555,6 +594,7 @@ public class Task3_Parser {
 							start++;
 						}
 					}
+					//decreasing
 					else {
 						while(start >= end) {
 							Option currOption = new Option(groupName + start, Type.NOTYPE);
@@ -585,8 +625,10 @@ public class Task3_Parser {
 					}
 				}
 				
+				//alphabets
 				else { 
 					if(startRange.compareTo(endRange) <= 0) {
+						//increasing
 						while(startRange.compareTo(endRange) <= 0) {
 							Option currOption = new Option(groupName + startRange, Type.NOTYPE);
 							if(currType.equals("String")) {
@@ -614,6 +656,7 @@ public class Task3_Parser {
 							startRange = String.valueOf( (char) (startRange.charAt(0) + 1));;
 						}
 					}
+					//decreasing
 					else {
 						while(startRange.compareTo(endRange) >= 0) {
 							Option currOption = new Option(groupName + startRange, Type.NOTYPE);
@@ -644,6 +687,7 @@ public class Task3_Parser {
 					}
 				}
 			}
+			//no groups of option, just singletons
 			else {
 				Option currOption = new Option(optionParse[i].trim(), Type.NOTYPE);
 				if(currType.equals("String")) {
@@ -673,7 +717,11 @@ public class Task3_Parser {
 		}
 	}
 
-	
+	/**
+	 * Helper method - checks if string contains only alphabets
+	 * @param str
+	 * @return true if only alphabets, false otherwise
+	 */
 	public static boolean isAlphabet(String str)
     {
         if (str == null) return false;
@@ -687,6 +735,11 @@ public class Task3_Parser {
         return true;
     }
 	
+	/**
+	 * Helper method - checks if string contains only numbers
+	 * @param str
+	 * @return true if only numbers, false otherwise
+	 */
 	public static boolean isNumber(String str)
     {
         if (str == null) return false;

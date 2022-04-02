@@ -126,7 +126,7 @@ public class Task3_TDD2 {
 	/*
 	 * Illegal type
 	 */
-	@Test(expected = Exception.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void groupedTestFour() throws Exception{
 		parser.addAll("option1-3", "o1-3", "Blah blah");
 	}
